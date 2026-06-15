@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-8 flex justify-between items-center bg-white p-4 rounded shadow-sm border border-gray-200">
+    <h2 class="text-3xl font-bold text-gray-800">Catálogo de Libros</h2>
+    <span class="text-gray-500 font-medium">Hay {{ libros|length }} libros disponibles</span>
+</div>
+
+{% if not libros %}
+<div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded text-blue-700">
+    <p>No hay libros disponibles en este momento en el catálogo.</p>
+</div>
+{% else %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for libro in libros %}
+    <div class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-100 flex flex-col transition hover:shadow-lg">
+        
+        <!-- Portada -->
+        <div class="h-64 bg-gray-200 flex items-center justify-center overflow-hidden">
+            {% if libro.portada and libro.portada != 'Sin portada' %}
+                <img src="{{ libro.portada }}" alt="Portada de {{ libro.titulo }}" class="w-full h-full object-cover">
+            {% else %}
+                <span class="text-gray-400 italic">Sin portada</span>
+            {% endif %}
+        </div>
+        
+        <!-- Información del libro -->
+        <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+                <h3 class="font-bold text-xl text-gray-800 mb-1 line-clamp-2" title="{{ libro.titulo }}">{{ libro.titulo }}</h3>
+                <p class="text-gray-600 text-sm font-semibold mb-3">por {{ libro.autor }}</p>
+                
+                <div class="text-xs text-gray-500 space-y-1 mb-4">
+                    <p><b>ISBN:</b> {{ libro.isbn }}</p>
+                    <p><b>Año:</b> {{ libro.anio_publicacion if libro.anio_publicacion else 'Desconocido' }}</p>
+                    <p><b>Temas:</b> <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded">{{ libro.temas if libro.temas else 'N/A' }}</span></p>
+                </div>
+            </div>
+            
+            <div class="pt-4 border-t border-gray-100 flex items-center justify-between mt-auto">
+                <span class="text-sm font-medium text-gray-700">
+                    Copias: <b>{{ libro.copias_disponibles }}</b> / {{ libro.copias_totales }}
+                </span>
+                
+                {% if libro.copias_disponibles > 0 %}
+                    <form action="{{ url_for('reservar', id_libro=libro.id) }}" method="POST" class="inline">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-sm focus:outline-none transition duration-300">
+                            Reservar
+                        </button>
+                    </form>
+                {% else %}
+                    <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold shadow-sm border border-red-200">
+                        Agotado
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

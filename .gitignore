@@ -1,0 +1,50 @@
+# =========================
+# Sistema Operativo (Windows / Mac)
+# =========================
+desktop.ini
+Thumbs.db
+ehthumbs.db
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# =========================
+# Entornos de Desarrollo / IDEs
+# =========================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.iml
+.spyderproject
+.spyproject
+.ropeproject
+.pdm.toml
+
+# =========================
+# Carpetas del Proyecto / Docker
+# =========================
+data/
+*.log
+.env
+
+# =========================
+# Python Generales (Por si se crean en la raíz)
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/

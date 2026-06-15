@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblio-IA</title>
+    <!-- Tailwind CSS vía CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal text-gray-800">
+    
+    <!-- Barra de Navegación -->
+    <nav class="bg-blue-800 p-4 shadow-md">
+        <div class="container mx-auto flex flex-wrap items-center justify-between">
+            <!-- Logo / Brand -->
+            <div class="flex items-center text-white mr-6">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                <span class="font-bold text-xl tracking-tight">Biblio-IA</span>
+            </div>
+            
+            <!-- Enlaces -->
+            <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto mt-4 lg:mt-0">
+                <div class="text-sm lg:flex-grow">
+                    <a href="{{ url_for('index') }}" class="block lg:inline-block text-blue-200 hover:text-white mr-4 transition duration-300 font-medium">
+                        Inicio
+                    </a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('mis_reservas') }}" class="block mt-2 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 transition duration-300 font-medium">
+                            Mis Reservas
+                        </a>
+                        {% if current_user.es_admin %}
+                        <a href="{{ url_for('agregar_libro') }}" class="block mt-2 lg:inline-block lg:mt-0 text-yellow-300 hover:text-yellow-100 mr-4 transition duration-300 font-bold">
+                            Añadir Libro (Admin)
+                        </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                
+                <!-- Opciones de Sesión -->
+                <div class="mt-4 lg:mt-0">
+                    {% if current_user.is_authenticated %}
+                        <span class="text-gray-300 text-sm mr-4">Hola, <b>{{ current_user.nombre_usuario }}</b></span>
+                        <a href="{{ url_for('logout') }}" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-blue-800 hover:bg-white transition duration-300">
+                            Cerrar Sesión
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-blue-800 hover:bg-white mr-2 transition duration-300">
+                            Login
+                        </a>
+                        <a href="{{ url_for('registro') }}" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white bg-blue-600 border-blue-600 hover:bg-blue-700 transition duration-300">
+                            Registro
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal -->
+    <div class="container mx-auto mt-8 px-4 mb-20">
+        
+        <!-- Mensajes Flash de Flask -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6">
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-2 rounded shadow-sm" role="alert">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% else %}
+                        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-2 rounded shadow-sm" role="alert">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Espacio donde se inyectarán las otras vistas -->
+        {% block content %}
+        {% endblock %}
+        
+    </div>
+
+</body>
+</html>

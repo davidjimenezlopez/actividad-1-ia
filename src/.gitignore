@@ -1,0 +1,31 @@
+# Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Flask y Base de Datos (si se genera en src)
+instance/
+*.db
+.webassets-cache
+
+# Entornos virtuales locales en src (opcional)
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Testing y Cobertura
+.pytest_cache/
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+
+# Logs
+*.log
